@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(colorful_talk VERSION 0.1.0 LANGUAGES C)
+project(colorful_talk VERSION 1.0.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -33,15 +33,22 @@ add_library(colorful_talk SHARED ${CT_SOURCES})
 target_include_directories(colorful_talk PUBLIC include PRIVATE src)
 target_compile_definitions(colorful_talk PRIVATE CT_BUILD_DLL)
 set_target_properties(colorful_talk PROPERTIES C_VISIBILITY_PRESET hidden)
+# 配布する DLL は VC ランタイム（vcruntime140.dll）なしで動くよう静的リンク
+set_target_properties(colorful_talk PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 if(NOT WIN32)
   target_link_libraries(colorful_talk_static PUBLIC m)
   target_link_libraries(colorful_talk PRIVATE m)
 endif()
 
-# CLI
-add_executable(ctalk cli/ctalk.c)
-target_link_libraries(ctalk PRIVATE colorful_talk_static)
+# CLI（単体で配布できるよう VC ランタイムを静的リンク）
+add_executable(ctalk cli/ctalk.c ${CT_SOURCES})
+target_include_directories(ctalk PRIVATE include src)
+target_compile_definitions(ctalk PRIVATE CT_STATIC)
+set_target_properties(ctalk PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+if(NOT WIN32)
+  target_link_libraries(ctalk PRIVATE m)
+endif()
 if(WIN32)
   target_link_libraries(ctalk PRIVATE winmm)
 endif()

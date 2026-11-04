@@ -30,7 +30,7 @@ extern "C" {
 #  define CT_CALL
 #endif
 
-#define CTALK_VERSION "0.1.0"
+#define CTALK_VERSION "1.0.0"
 
 /* 声の種類 */
 enum {

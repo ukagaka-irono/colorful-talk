@@ -11,6 +11,11 @@
 
 音声はいわゆる「ロボット声」です。録音ベースの商用エンジンほど自然ではありません。
 
+## ダウンロード
+
+ビルド済みの Windows (x64) 版は [Releases](https://github.com/ukagaka-irono/colorful-talk/releases) にあります。
+`colorful_talk.dll` と `ctalk.exe` は VC ランタイムを含んでいるので、追加のインストールなしで動きます。
+
 ## ビルド
 
 CMake 3.20 以上と C コンパイラ（Visual Studio 2019 以降 / gcc / clang）が必要です。
